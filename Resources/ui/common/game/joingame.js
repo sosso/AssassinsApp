@@ -63,6 +63,7 @@ JoinGameWindow = function() {
 				game_id : gameid.value,
 				game_password : password.value
 			};
+			require('network/game_membership_functions');
 			Ti.App.fireEvent('network:game:join', {
 				params : params
 			});
@@ -72,7 +73,11 @@ JoinGameWindow = function() {
 	});
 
 	Ti.App.addEventListener('network:game:join:failure', function() {
-		alert('Login failed.  Please enter your email and password and try again.');
+		alert('Login failed.  Please enter the game ID and password and try again.');
+	});
+
+	Ti.App.addEventListener('network:game:join:success', function() {
+		self.close();
 	});
 
 	return self;

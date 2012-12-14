@@ -11,8 +11,5 @@ GM
 Both
 	view/resolve dispute
 	view all kills
-	view games
 	view users in game
-	
-view games
 

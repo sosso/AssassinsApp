@@ -48,6 +48,19 @@ function ApplicationWindow(title) {
 		self.containingTab.open(new GameListWindow(gamesJSON.games));
 	});
 
+	var gameJoinButton = Ti.UI.createButton({
+		height : 44,
+		width : 200,
+		title : 'Join game',
+		top : 164
+	});
+	self.add(gameJoinButton);
+
+	gameJoinButton.addEventListener('click', function() {
+		JoinGameWindow = require('ui/common/game/joingame');
+		self.containingTab.open(new JoinGameWindow());
+	});
+
 	return self;
 };
 

@@ -26,10 +26,10 @@ Ti.App.addEventListener('network:game:join', function(params) {
 			response : this.responseText
 		});
 	};
-	params.username = Ti.App.Properties.getString('username', '');
-	params.secret_token = Ti.App.Properties.getString('secret_token', '');
-	joinReq.open("POST", network.baseurl + '/game');
-	joinReq.send(params);
+	params.params.username = Ti.App.Properties.getString('username', '');
+	params.params.secret_token = Ti.App.Properties.getString('secret_token', '');
+	joinReq.open("POST", network.baseurl + '/game/');
+	joinReq.send(params.params);
 });
 
 Ti.App.addEventListener('network:game:getall', function(params) {
