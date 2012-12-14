@@ -1,7 +1,7 @@
 function ApplicationWindow(title) {
 	AccountMakerWindow = require('ui/common/AccountMakerWindow');
 	LoginWindow = require('ui/common/LoginWindow');
-
+	GameListWindow = require('ui/common/game/GameListWindow');
 	var self = Ti.UI.createWindow({
 		title : title,
 		backgroundColor : 'white'
@@ -29,6 +29,22 @@ function ApplicationWindow(title) {
 
 	accountCreatorButton.addEventListener('click', function() {
 		self.containingTab.open(new AccountMakerWindow());
+	});
+
+	var gameListButton = Ti.UI.createButton({
+		height : 44,
+		width : 200,
+		title : 'View my games',
+		top : 124
+	});
+	self.add(gamesListButton);
+
+	gameListButton.addEventListener('click', function() {
+		Ti.App.fireEvent('network:game:getall');
+	});
+
+	Ti.App.addEventListener('network:game:getall:success', function(gamesJSON) {
+		self.containingTab.open(new GameListWindow(gamesJSON));
 	});
 
 	return self;
