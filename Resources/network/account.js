@@ -8,9 +8,9 @@ Ti.App.addEventListener('network:account:createuser', function(params) {
 			if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
 				var image = event.media
 				createReq.open("POST", network.baseurl + '/account/createuser');
-				params.file = image;
-				params.name = 'profile_picture';
-				createReq.send(params);
+				params.params.file = image;
+				params.params.name = 'profile_picture';
+				createReq.send(params.params);
 			} else {
 				alert("Photographs only" + event.mediaType);
 			}
@@ -49,8 +49,8 @@ Ti.App.addEventListener('network:account:createuser', function(params) {
 			var response = JSON.parse(json);
 			if (!response.reason && response.success == 'success') {
 				Ti.App.fireEvent('network:account:createuser:success');
-				Ti.App.Properties.setString('username', params.username);
-				Ti.App.Properties.setString('secret_token', params.password);
+				Ti.App.Properties.setString('username', params.params.username);
+				Ti.App.Properties.setString('secret_token', params.params.password);
 			} else {
 				Ti.App.fireEvent('app:accountCreationFailure', {
 					response : this.responseText
@@ -74,9 +74,9 @@ Ti.App.addEventListener('network:account:login', function(params) {
 		try {
 			var response = JSON.parse(json);
 			if (!response.reason && response.success == 'success') {
+				Ti.App.Properties.setString('username', params.params.username);
+				Ti.App.Properties.setString('secret_token', params.params.password);
 				Ti.App.fireEvent('network:account:login:success');
-				Ti.App.Properties.setString('username', params.username);
-				Ti.App.Properties.setString('secret_token', params.password);
 			} else {
 				Ti.App.fireEvent('app:loginFailure', {
 					response : this.responseText
@@ -93,7 +93,10 @@ Ti.App.addEventListener('network:account:login', function(params) {
 			response : this.responseText
 		});
 	};
-	createReq.open("POST", network.baseurl + '/account/login');
-	createReq.send(params);
-
+	Ti.App.fireEvent('app:showiOSLoadingIndicator', {
+		message : 'Logging you in. . .',
+		reason : 'login attempt'
+	});
+	loginReq.open("POST", network.baseurl + '/account/login');
+	loginReq.send(params.params);
 });

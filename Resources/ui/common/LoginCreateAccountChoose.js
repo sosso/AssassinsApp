@@ -37,14 +37,15 @@ function ApplicationWindow(title) {
 		title : 'View my games',
 		top : 124
 	});
-	self.add(gamesListButton);
+	self.add(gameListButton);
 
 	gameListButton.addEventListener('click', function() {
+		require('network/game_membership_functions');
 		Ti.App.fireEvent('network:game:getall');
 	});
 
 	Ti.App.addEventListener('network:game:getall:success', function(gamesJSON) {
-		self.containingTab.open(new GameListWindow(gamesJSON));
+		self.containingTab.open(new GameListWindow(gamesJSON.games));
 	});
 
 	return self;

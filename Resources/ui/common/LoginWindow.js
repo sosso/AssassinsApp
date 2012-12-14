@@ -1,4 +1,5 @@
 LoginWindow = function() {
+	require('network/account');
 	var self = Titanium.UI.createWindow({
 		backgroundColor : 'black',
 		exitOnClose : false
@@ -91,14 +92,12 @@ LoginWindow = function() {
 	});
 
 	loginBtn.addEventListener('click', function() {
-		if (email.value != '' && password.value != '') {
+		if (username.value != '' && password.value != '') {
 			var params = {
-				version : Ti.App.version,
-				username : email.value,
-				password : password.value,
-				app_api : (Ti.Platform.osname === 'iphone' ? '462b76e5f4fda377b02bf993e4231cbd4a5047a9' : 'e2aae8ab04d3da646230badd7ac1fdecc4d67916'),
+				username : username.value,
+				password : password.value
 			};
-			Ti.App.fireEvent('app:loginAttempt', {
+			Ti.App.fireEvent('network:account:login', {
 				params : params
 			});
 		} else {
@@ -106,19 +105,11 @@ LoginWindow = function() {
 		}
 	});
 
-	Ti.App.addEventListener('app:loginFailure', function() {
-		alert('Login failed.  Please enter your email and password and try again.');
+	Ti.App.addEventListener('network:account:login:failure', function() {
+		alert('Login failed.  Please enter your username and password and try again.');
 	});
-
-	Ti.App.addEventListener('app:loginAttempt', function(e) {
-		Ti.App.fireEvent('app:showiOSLoadingIndicator', {
-			message : 'Logging you in. . .',
-			reason : 'login attempt'
-		});
-		var loginReq = Titanium.Network.createHTTPClient();
-
-		loginReq.open("GET", FEO.network.generateGetURL(FEO.app.api.apiBaseURL + 'auth/', e.params));
-		loginReq.send();
+	Ti.App.addEventListener('network:account:login:success', function() {
+		self.close();
 	});
 
 	return self;

@@ -1,4 +1,4 @@
-function GameList(gamesJSON) {
+function GameListWindow(gamesJSON) {
 	var self = Ti.UI.createWindow({
 		backgroundColor : 'black',
 		exitOnClose : false
@@ -24,4 +24,4 @@ function GameList(gamesJSON) {
 	return self;
 };
 
-module.exports = GameList;
+module.exports = GameListWindow;
