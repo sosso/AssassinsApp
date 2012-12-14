@@ -12,16 +12,31 @@ function AccountMakerWindow() {
 	});
 	self.add(scrollView);
 
-	var email = Titanium.UI.createTextField({
+	var username = Titanium.UI.createTextField({
 		color : '#336699',
 		center : {
 			x : '50%',
 			y : ' 5%'
 		},
 		width : '80%',
-		height : '15%',
+		height : '10%',
 		hintText : 'Username',
 		keyboardType : Titanium.UI.KEYBOARD_DEFAULT,
+		returnKeyType : Titanium.UI.RETURNKEY_DEFAULT,
+		borderStyle : Titanium.UI.INPUT_BORDERSTYLE_ROUNDED
+	});
+	scrollView.add(username);
+
+	var email = Titanium.UI.createTextField({
+		color : '#336699',
+		center : {
+			x : '50%',
+			y : '15%'
+		},
+		width : '80%',
+		height : '10%',
+		hintText : 'Email address',
+		keyboardType : Titanium.UI.KEYBOARD_EMAIL,
 		returnKeyType : Titanium.UI.RETURNKEY_DEFAULT,
 		borderStyle : Titanium.UI.INPUT_BORDERSTYLE_ROUNDED
 	});
@@ -34,7 +49,7 @@ function AccountMakerWindow() {
 			x : '50%',
 			y : '30%'
 		},
-		height : '15%',
+		height : '10%',
 		hintText : 'Password',
 		passwordMask : true,
 		keyboardType : Titanium.UI.KEYBOARD_DEFAULT,
@@ -48,10 +63,10 @@ function AccountMakerWindow() {
 		width : '80%',
 		center : {
 			x : '50%',
-			y : '50%'
+			y : '40%'
 		},
-		height : '15%',
-		hintText : 'Password Again',
+		height : '10%',
+		hintText : 'Confirm password',
 		passwordMask : true,
 		keyboardType : Titanium.UI.KEYBOARD_DEFAULT,
 		returnKeyType : Titanium.UI.RETURNKEY_DEFAULT,
@@ -61,9 +76,12 @@ function AccountMakerWindow() {
 
 	var createBtn = Titanium.UI.createButton({
 		title : 'Create Account',
-		top : '80%',
 		width : '80%',
-		height : '15%',
+		height : '10%',
+		center : {
+			x : '50%',
+			y : '50%'
+		},
 		borderRadius : 1,
 		font : {
 			fontFamily : 'Arial',
@@ -85,24 +103,7 @@ function AccountMakerWindow() {
 		return (testresults);
 	};
 
-	var createReq = Titanium.Network.createHTTPClient();
-	createReq.onload = function() {
-		try {
-			var json = this.responseText;
-			var response = JSON.parse(json);
-			if (!response.errorcode && response.auth) {
-				Ti.App.fireEvent('app:accountCreationSuccess');
-				Ti.App.Properties.setString('newFEOToken', response.auth);
-				self.close();
-			} else {
-				Ti.App.fireEvent('app:accountCreationFailure', {
-					response : this.responseText
-				});
-			}
-		} catch(exception) {
-			FEO.error('Error creating account');
-		}
-	};
+	var createReq = require('network/account');
 
 	createBtn.addEventListener('click', function(e) {
 		if (email.value !== '' && password1.value !== '' && password2.value !== '') {
@@ -112,14 +113,12 @@ function AccountMakerWindow() {
 				if (!checkemail(email.value)) {
 					alert("Please enter a valid email address");
 				} else {
-					createReq.open("POST", FEO.app.api.apiBaseURL + "auth/");
 					var params = {
-						app_api : ($$.os === 'iphone' ? '462b76e5f4fda377b02bf993e4231cbd4a5047a9' : 'e2aae8ab04d3da646230badd7ac1fdecc4d67916'),
-						username : email.value,
-						version : Ti.App.version,
+						username : username.value,
+						email : email.value,
 						password : password1.value
 					};
-					createReq.send(params);
+					Ti.App.fireEvent('network:account:createuser', params);
 				}
 			}
 		} else {

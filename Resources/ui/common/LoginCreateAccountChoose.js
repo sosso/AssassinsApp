@@ -1,6 +1,6 @@
 function ApplicationWindow(title) {
 	AccountMakerWindow = require('ui/common/AccountMakerWindow');
-	LoginWindow = require('ui/common/LoginWindow')
+	LoginWindow = require('ui/common/LoginWindow');
 
 	var self = Ti.UI.createWindow({
 		title : title,

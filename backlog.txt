@@ -1,0 +1,16 @@
+players
+	view missions
+	assassinate
+powerups
+	buy
+	view available
+	view possessed
+GM
+	grant powerups
+	start game
+Both
+	view/resolve dispute
+	view all kills
+	join game
+	view games
+	view users in game
