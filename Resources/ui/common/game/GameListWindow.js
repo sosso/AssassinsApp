@@ -14,7 +14,8 @@ function GameStatusView(game) {
 		// height : '100%',
 		// width : '100%',		data : gameData,
 		layout : 'horizontal',
-		backgroundColor : 'black'
+		backgroundColor : 'black',
+		hasDetail : true
 	});
 	view.add(Ti.UI.createLabel({
 		color : 'white',
@@ -82,6 +83,14 @@ function GameListWindow(gamesJSON) {
 	var tableview = Titanium.UI.createTableView({
 		data : data
 	});
+
+	tableview.addEventListener('click', function(e) {
+		if (e.row.hasDetail) {
+			GameDetailWindow = require('ui/common/game/GameDetailWindow');
+			new GameDetailWindow(e.row.data).open();
+		}
+	});
+
 	self.add(tableview);
 	return self;
 };

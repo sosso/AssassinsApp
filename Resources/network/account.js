@@ -8,9 +8,13 @@ Ti.App.addEventListener('network:account:createuser', function(params) {
 			if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
 				var image = event.media
 				createReq.open("POST", network.baseurl + '/account/createuser');
-				params.params.file = image;
-				params.params.name = 'profile_picture';
-				createReq.send(params.params);
+				var reqParams = {
+					profile_picture : image,
+					username : params.username,
+					email : params.email,
+					password : params.password
+				}
+				createReq.send(reqParams);
 			} else {
 				alert("Photographs only" + event.mediaType);
 			}
@@ -49,8 +53,8 @@ Ti.App.addEventListener('network:account:createuser', function(params) {
 			var response = JSON.parse(json);
 			if (!response.reason && response.success == 'success') {
 				Ti.App.fireEvent('network:account:createuser:success');
-				Ti.App.Properties.setString('username', params.params.username);
-				Ti.App.Properties.setString('secret_token', params.params.password);
+				Ti.App.Properties.setString('username', params.username);
+				Ti.App.Properties.setString('secret_token', params.password);
 			} else {
 				Ti.App.fireEvent('app:accountCreationFailure', {
 					response : this.responseText
