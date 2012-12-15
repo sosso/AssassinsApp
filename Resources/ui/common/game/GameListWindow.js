@@ -14,20 +14,43 @@ function GameStatusView(game) {
 		// height : '100%',
 		// width : '100%',		data : gameData,
 		layout : 'horizontal',
-		backgroundColor : 'blue'
+		backgroundColor : 'black'
 	});
 	view.add(Ti.UI.createLabel({
 		color : 'white',
 		text : gameData.title,
 		left : 0,
-		width : '25%',
+		width : '35%',
 		height : 'auto',
 		ellipsize : true
 	}));
+	var playerLabel = Ti.UI.createLabel({
+		color : (gameData.alive ? 'green' : 'red'),
+		text : (gameData.alive ? 'Alive' : 'Dead'),
+		width : '35%',
+		height : 'auto',
+		ellipsize : true
+	});
+	view.add(playerLabel);
+
+	if (!gameData.started) {
+		playerLabel.text = 'Not started';
+		playerLabel.color = 'orange';
+	}
+	Ti.App.addEventListener('network:game:start:success' + gameData.game_id, function() {
+		view.remove(startGameButton);
+	});
+	Ti.App.addEventListener('network:game:start:failure' + gameData.game_id, function(e) {
+		alert(e.reason);
+	});
+
 	if (gameData.isGameMaster) {
+		playerLabel.color = 'yellow';
+		playerLabel.text = 'Game Master';
+
 		var startGameButton = Ti.UI.createButton({
-			width : '25%',
-			height : '100%',
+			width : '30%',
+			height : 'auto',
 			title : 'Start Game'
 		});
 		if (gameData.started) {
@@ -40,9 +63,9 @@ function GameStatusView(game) {
 				game_id : gameData.game_id
 			});
 		});
-
 		view.add(startGameButton);
 	}
+
 	return view;
 }
 
@@ -52,7 +75,7 @@ function GameListWindow(gamesJSON) {
 		exitOnClose : false
 	});
 	var data = [];
-	for (var i = 0; i < gamesJSON.length; i++) {
+	for (var i = 0, len = gamesJSON.length; i < len; i++) {
 		data.push(new GameStatusView(gamesJSON[i]));
 	}
 	// create table view

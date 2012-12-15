@@ -60,6 +60,18 @@ function ApplicationWindow(title) {
 		JoinGameWindow = require('ui/common/game/joingame');
 		self.containingTab.open(new JoinGameWindow());
 	});
+	var gameCreateButton = Ti.UI.createButton({
+		height : 44,
+		width : 200,
+		title : 'Create game',
+		top : 204
+	});
+	self.add(gameCreateButton);
+
+	gameCreateButton.addEventListener('click', function() {
+		GameMakerWindow = require('ui/common/GameMakerWindow');
+		self.containingTab.open(new GameMakerWindow());
+	});
 
 	return self;
 };

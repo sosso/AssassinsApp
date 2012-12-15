@@ -1,6 +1,7 @@
-function GameCreatorWindow() {
+function GameMakerWindow() {
 	var self = Titanium.UI.createWindow({
-		backgroundColor : 'black'
+		backgroundColor : 'black',
+		windowSoftInputMode : Ti.UI.Android.SOFT_INPUT_ADJUST_PAN
 	});
 
 	var scrollView = Titanium.UI.createScrollView({
@@ -8,7 +9,8 @@ function GameCreatorWindow() {
 		contentHeight : 'auto',
 		top : 0,
 		showVerticalScrollIndicator : true,
-		showHorizontalScrollIndicator : false
+		showHorizontalScrollIndicator : false,
+		windowSoftInputMode : Ti.UI.Android.SOFT_INPUT_ADJUST_PAN
 	});
 	self.add(scrollView);
 
@@ -84,13 +86,18 @@ function GameCreatorWindow() {
 				secret_token : Ti.App.Properties.getString('secret_token', ''),
 				game_master_username : Ti.App.Properties.getString('username', '')
 			};
+			require('network/game_master_functions');
 			Ti.App.fireEvent('network:game:creategame', params);
 		} else {
 			alert("All fields are required");
 		}
 	});
 
+	Ti.App.addEventListener('network:game:creategame:success', function() {
+		self.close();
+	});
+
 	return self;
 };
 
-module.exports = GameCreatorWindow;
+module.exports = GameMakerWindow;

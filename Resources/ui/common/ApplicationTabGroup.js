@@ -27,9 +27,8 @@ function ApplicationTabGroup(Window) {
 	});
 	win1.containingTab = tab2;
 
-	self.addTab(tab2);
 	self.addTab(tab1);
-
+	self.addTab(tab2);
 	return self;
 };
 

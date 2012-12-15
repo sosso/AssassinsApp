@@ -16,7 +16,7 @@ Ti.App.addEventListener('network:game:join', function(params) {
 				});
 			}
 		} catch(exception) {
-			logger.error('Failed to parse auth json');
+			logger.error(exception.msg);
 		}
 
 	};
@@ -40,11 +40,9 @@ Ti.App.addEventListener('network:game:getall', function(params) {
 		var json = this.responseText;
 		try {
 			var response = JSON.parse(json);
-			if (!response.reason) {
-				Ti.App.fireEvent('network:game:getall:success', {
-					games : response
-				});
-			}
+			Ti.App.fireEvent('network:game:getall:success', {
+				games : response
+			});
 		} catch(exception) {
 			logger.error('Failed to parse auth json');
 		}
