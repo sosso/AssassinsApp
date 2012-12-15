@@ -7,7 +7,7 @@ function GameStatusView(game) {
 	gameData.alive = (game.alive == 'True');
 	gameData.started = (game.started == 'True');
 	gameData.completed = (game.completed == 'True');
-	gameData.isGameMaster = (game.isGameMaster == 'True');
+	gameData.isGameMaster = game.is_game_master;
 	var view = Ti.UI.createTableViewRow({
 		className : 'GameStatus',
 		touchEnabled : true,

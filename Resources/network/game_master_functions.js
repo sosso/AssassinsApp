@@ -26,8 +26,12 @@ Ti.App.addEventListener('network:game:start', function(params) {
 			response : this.responseText
 		});
 	};
-	params.params.game_master_username = Ti.App.Properties.getString('username', '');
-	params.params.secret_token = Ti.App.Properties.getString('secret_token', '');
+	var reqParams = {
+		game_id : params.game_id,
+		game_master_username : Ti.App.Properties.getString('username', ''),
+		secret_token : Ti.App.Properties.getString('secret_token', '')
+	};
+
 	startReq.open("POST", network.baseurl + '/game/master/start');
-	startReq.send(params.params);
+	startReq.send(reqParams);
 });
