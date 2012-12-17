@@ -13,3 +13,18 @@ Both
 	view all kills
 	view users in game
 
+
+bugs:
+	click on start game propagates to tableview and it displays detail view
+	gm shouldn't have 'get current target' button
+	get current target disabled when game not started
+	gm text displays for game detail (alive, etc)
+	game not displaying as started when start clicked
+to add:
+	please wait after picture takes + uploads
+	user email addresses
+	showing 'alive' when game not started for player
+	dont let ppl join game in progress
+	
+to check
+	join fails first try..?

@@ -1,7 +1,8 @@
 JoinGameWindow = function() {
 	var self = Titanium.UI.createWindow({
 		backgroundColor : 'black',
-		exitOnClose : false
+		exitOnClose : false,
+		orientationModes : [Ti.UI.PORTRAIT, Ti.UI.UPSIDE_PORTRAIT]
 	});
 
 	Ti.App.addEventListener('app:authTokenLoginSuccess', function() {
@@ -73,7 +74,7 @@ JoinGameWindow = function() {
 	});
 
 	Ti.App.addEventListener('network:game:join:failure', function() {
-		alert('Login failed.  Please enter the game ID and password and try again.');
+		alert('Join failed.  Please enter the game ID and password and try again.');
 	});
 
 	Ti.App.addEventListener('network:game:join:success', function() {

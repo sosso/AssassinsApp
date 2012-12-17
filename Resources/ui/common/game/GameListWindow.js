@@ -4,9 +4,9 @@ function GameStatusView(game) {
 		game_id : game.game_id,
 		game_password : game.game_password,
 	};
-	gameData.alive = (game.alive == 'True');
-	gameData.started = (game.started == 'True');
-	gameData.completed = (game.completed == 'True');
+	gameData.alive = game.alive;
+	gameData.started = game.started;
+	gameData.completed = game.completed;
 	gameData.isGameMaster = game.is_game_master;
 	var view = Ti.UI.createTableViewRow({
 		className : 'GameStatus',
@@ -15,7 +15,8 @@ function GameStatusView(game) {
 		// width : '100%',		data : gameData,
 		layout : 'horizontal',
 		backgroundColor : 'black',
-		hasDetail : true
+		hasDetail : true,
+		bubbleParent : true
 	});
 	view.add(Ti.UI.createLabel({
 		color : 'white',
@@ -23,14 +24,16 @@ function GameStatusView(game) {
 		left : 0,
 		width : '35%',
 		height : 'auto',
-		ellipsize : true
+		ellipsize : true,
+		bubbleParent : true
 	}));
 	var playerLabel = Ti.UI.createLabel({
 		color : (gameData.alive ? 'green' : 'red'),
 		text : (gameData.alive ? 'Alive' : 'Dead'),
 		width : '35%',
 		height : 'auto',
-		ellipsize : true
+		ellipsize : true,
+		bubbleParent : true
 	});
 	view.add(playerLabel);
 
@@ -38,13 +41,6 @@ function GameStatusView(game) {
 		playerLabel.text = 'Not started';
 		playerLabel.color = 'orange';
 	}
-	Ti.App.addEventListener('network:game:start:success' + gameData.game_id, function() {
-		view.remove(startGameButton);
-	});
-	Ti.App.addEventListener('network:game:start:failure' + gameData.game_id, function(e) {
-		alert(e.reason);
-	});
-
 	if (gameData.isGameMaster) {
 		playerLabel.color = 'yellow';
 		playerLabel.text = 'Game Master';
@@ -52,10 +48,16 @@ function GameStatusView(game) {
 		var startGameButton = Ti.UI.createButton({
 			width : '30%',
 			height : 'auto',
-			title : 'Start Game'
+			title : 'Start Game',
+			bubbleParent : false
+		});
+
+		Ti.App.addEventListener('network:game:start:success' + gameData.game_id, function() {
+			view.remove(startGameButton);
 		});
 		if (gameData.started) {
 			startGameButton.enabled = false;
+			startGameButton.title = 'Started';
 		}
 
 		startGameButton.addEventListener('click', function() {
@@ -66,6 +68,10 @@ function GameStatusView(game) {
 		});
 		view.add(startGameButton);
 	}
+
+	Ti.App.addEventListener('network:game:start:failure' + gameData.game_id, function(e) {
+		alert(e.reason);
+	});
 
 	return view;
 }
@@ -85,7 +91,7 @@ function GameListWindow(gamesJSON) {
 	});
 
 	tableview.addEventListener('click', function(e) {
-		if (e.row.hasDetail) {
+		if (e.source.bubbleParent && e.row.hasDetail) {//ignore presses on the button
 			GameDetailWindow = require('ui/common/game/GameDetailWindow');
 			new GameDetailWindow(e.row.data).open();
 		}

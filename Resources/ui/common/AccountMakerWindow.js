@@ -1,7 +1,8 @@
 function AccountMakerWindow() {
 	var self = Titanium.UI.createWindow({
 		backgroundColor : 'black',
-		windowSoftInputMode : Ti.UI.Android.SOFT_INPUT_ADJUST_PAN
+		windowSoftInputMode : Ti.UI.Android.SOFT_INPUT_ADJUST_PAN,
+		orientationModes : [Ti.UI.PORTRAIT, Ti.UI.UPSIDE_PORTRAIT]
 	});
 
 	var scrollView = Titanium.UI.createScrollView({
@@ -126,6 +127,10 @@ function AccountMakerWindow() {
 		} else {
 			alert("All fields are required");
 		}
+	});
+
+	Ti.App.addEventListener('network:account:createuser:success', function() {
+		self.close();
 	});
 
 	return self;

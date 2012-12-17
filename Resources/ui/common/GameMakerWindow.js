@@ -1,7 +1,8 @@
 function GameMakerWindow() {
 	var self = Titanium.UI.createWindow({
 		backgroundColor : 'black',
-		windowSoftInputMode : Ti.UI.Android.SOFT_INPUT_ADJUST_PAN
+		windowSoftInputMode : Ti.UI.Android.SOFT_INPUT_ADJUST_PAN,
+		orientationModes : [Ti.UI.PORTRAIT, Ti.UI.UPSIDE_PORTRAIT]
 	});
 
 	var scrollView = Titanium.UI.createScrollView({

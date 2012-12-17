@@ -2,7 +2,8 @@ LoginWindow = function() {
 	require('network/account');
 	var self = Titanium.UI.createWindow({
 		backgroundColor : 'black',
-		exitOnClose : false
+		exitOnClose : false,
+		orientationModes : [Ti.UI.PORTRAIT, Ti.UI.UPSIDE_PORTRAIT]
 	});
 
 	Ti.App.addEventListener('app:authTokenLoginSuccess', function() {

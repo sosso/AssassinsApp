@@ -4,7 +4,8 @@ function ApplicationWindow(title) {
 	GameListWindow = require('ui/common/game/GameListWindow');
 	var self = Ti.UI.createWindow({
 		title : title,
-		backgroundColor : 'white'
+		backgroundColor : 'white',
+		orientationModes : [Ti.UI.PORTRAIT, Ti.UI.UPSIDE_PORTRAIT]
 	});
 
 	var loginButton = Ti.UI.createButton({

@@ -12,17 +12,24 @@ function GameDetailWindow(gameData) {
 	var self = Ti.UI.createWindow({
 		backgroundColor : 'black',
 		exitOnClose : false,
-		layout : 'vertical'
+		layout : 'vertical',
+		orientationModes : [Ti.UI.PORTRAIT, Ti.UI.UPSIDE_PORTRAIT]
 	});
 
 	var gameStatus = 'Game title: ' + gameData.title + '\n';
 	gameStatus += 'Game ID: ' + gameData.game_id + '\n';
 	gameStatus += 'Game password: ' + gameData.game_password + '\n';
-	gameStatus += 'Alive/dead: ' + (gameData.alive ? 'Alive' : 'Dead') + '\n';
+	if(gameData.isGameMaster){
+		gameStatus += 'Alive/dead: N/A\n';
+	}else{
+		gameStatus += 'Alive/dead: ' + (gameData.alive ? 'Alive' : 'Dead') + '\n';	
+	}
+	
 	gameStatus += 'Game started: ' + gameData.started + '\n';
 	gameStatus += 'Game completed: ' + gameData.completed + '\n';
 	gameStatus += 'Player or Game Master: ' + (gameData.isGameMaster ? 'Game Master' : 'Player') + '\n';
 
+	
 	self.add(Ti.UI.createLabel({
 		color : 'white',
 		text : gameStatus,
@@ -30,6 +37,47 @@ function GameDetailWindow(gameData) {
 		height : 'auto',
 		ellipsize : false
 	}));
+	var getMissionButton = Ti.UI.createButton({
+		title : 'Get current target',
+		width : '100%',
+		height : 'auto'
+	});
+	self.add(getMissionButton);
+	var currentMissionLabel = Ti.UI.createLabel({
+		color : 'white',
+		text : 'Click button to get current mission',
+		width : '100%',
+		height : 'auto',
+		ellipsize : false
+	});
+	self.add(currentMissionLabel);
+	getMissionButton.addEventListener('click', function() {
+		require('network/GameMissionFunctions');
+		currentMissionLabel.text = 'Loading. . .';
+		Ti.App.fireEvent('network:game:viewmission', {
+			game_id : gameData.game_id
+		});
+	});
+	var targetImage = Ti.UI.createImageView({
+		height : '35%',
+		width : 'auto',
+		image : '',
+		backgroundColor : 'black'
+	});
+	self.add(targetImage);
+
+	Ti.App.addEventListener('network:game:viewmission:success', function(missionInfo) {
+		text = 'Username: ' + missionInfo.mission.target_username + '\n';
+		text += 'Date assigned: ' + missionInfo.mission.assigned + '\n';
+		text += 'Date completed: ' + (missionInfo.mission.completed ? missionInfo.mission.completed : 'Not yet completed') + '\n';
+		text += 'Target profile picture: ';
+		currentMissionLabel.text = text;
+		targetImage.image = missionInfo.mission.profile_picture;
+	});
+
+	Ti.App.addEventListener('network:game:viewmission:failure', function(missionInfo) {
+		currentMissionLabel.text = 'Failed to load mission information.  Try again?';
+	});
 
 	return self;
 }
