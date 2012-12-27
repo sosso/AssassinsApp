@@ -2,30 +2,34 @@ function ApplicationTabGroup(Window) {
 	//create module instance
 	LoginCreateAccountChoose = require('ui/common/LoginCreateAccountChoose');
 	AccountMakerWindow = require('ui/common/AccountMakerWindow');
+	LoadingIndicator = require('ui/common/LoadingIndicator');
+	var loadingIndicator = new LoadingIndicator();
+
 	LoginWindow = require('ui/common/LoginWindow');
-	GameCreatorWindow = require('ui/common/GameMakerWindow');
+	GameMenuWindow = require('ui/common/GameMenuWindow');
 	var self = Ti.UI.createTabGroup();
 
 	//create app tabs
 	var win1 = new LoginCreateAccountChoose();
-	var win2 = new GameCreatorWindow();
+	var win2 = new GameMenuWindow();
 	// var win2 = new LoginWindow();
 	// var win2 = new AccountMakerWindow();
 	//Window(L('home'));
 
 	var tab2 = Ti.UI.createTab({
-		title : L('home'),
+		title : 'Game Menu',
 		icon : '/images/KS_nav_views.png',
 		window : win2
 	});
-	win2.containingTab = tab1;
+	win1.containingTab = tab2;
+	loadingIndicator.tab = tab2;
 
 	var tab1 = Ti.UI.createTab({
-		title : L('settings'),
+		title : 'Account',
 		icon : '/images/KS_nav_ui.png',
 		window : win1
 	});
-	win1.containingTab = tab2;
+	win2.containingTab = tab1;
 
 	self.addTab(tab1);
 	self.addTab(tab2);

@@ -1,13 +1,4 @@
 function GameDetailWindow(gameData) {
-	// gameData = {
-	// title : game.game_friendly_name,
-	// game_id : game.game_id,
-	// game_password : game.game_password,
-	// };
-	// gameData.alive = (game.alive == 'True');
-	// gameData.started = (game.started == 'True');
-	// gameData.completed = (game.completed == 'True');
-	// gameData.isGameMaster = game.is_game_master;
 
 	var self = Ti.UI.createWindow({
 		backgroundColor : 'black',
@@ -15,21 +6,21 @@ function GameDetailWindow(gameData) {
 		layout : 'vertical',
 		orientationModes : [Ti.UI.PORTRAIT, Ti.UI.UPSIDE_PORTRAIT]
 	});
+	var targetUsername, game_id;
 
 	var gameStatus = 'Game title: ' + gameData.title + '\n';
 	gameStatus += 'Game ID: ' + gameData.game_id + '\n';
 	gameStatus += 'Game password: ' + gameData.game_password + '\n';
-	if(gameData.isGameMaster){
+	if (gameData.isGameMaster) {
 		gameStatus += 'Alive/dead: N/A\n';
-	}else{
-		gameStatus += 'Alive/dead: ' + (gameData.alive ? 'Alive' : 'Dead') + '\n';	
+	} else {
+		gameStatus += 'Alive/dead: ' + (gameData.alive ? 'Alive' : 'Dead') + '\n';
 	}
-	
+
 	gameStatus += 'Game started: ' + gameData.started + '\n';
 	gameStatus += 'Game completed: ' + gameData.completed + '\n';
 	gameStatus += 'Player or Game Master: ' + (gameData.isGameMaster ? 'Game Master' : 'Player') + '\n';
 
-	
 	self.add(Ti.UI.createLabel({
 		color : 'white',
 		text : gameStatus,
@@ -52,6 +43,9 @@ function GameDetailWindow(gameData) {
 	});
 	self.add(currentMissionLabel);
 	getMissionButton.addEventListener('click', function() {
+		Ti.App.fireEvent('app:showiOSLoadingIndicator', {
+			message : 'Getting your mission. . .'
+		});
 		require('network/GameMissionFunctions');
 		currentMissionLabel.text = 'Loading. . .';
 		Ti.App.fireEvent('network:game:viewmission', {
@@ -62,20 +56,45 @@ function GameDetailWindow(gameData) {
 		height : '35%',
 		width : 'auto',
 		image : '',
-		backgroundColor : 'black'
+		backgroundColor : 'black',
+		visible : false
+	});
+
+	var shootTargetButton = Ti.UI.createButton({
+		title : 'Assassinate target',
+		visible : false
+	});
+
+	shootTargetButton.addEventListener('click', function() {
+		AssassinateWindow = require('ui/common/game/AssassinateWindow');
+		Ti.App.fireEvent('ui:assassinate', {
+			target_username : target_username,
+			game_id : gameData.game_id
+		});
 	});
 	self.add(targetImage);
+	self.add(shootTargetButton);
 
 	Ti.App.addEventListener('network:game:viewmission:success', function(missionInfo) {
 		text = 'Username: ' + missionInfo.mission.target_username + '\n';
 		text += 'Date assigned: ' + missionInfo.mission.assigned + '\n';
 		text += 'Date completed: ' + (missionInfo.mission.completed ? missionInfo.mission.completed : 'Not yet completed') + '\n';
 		text += 'Target profile picture: ';
+		if (!missionInfo.mission.completed) {
+			shootTargetButton.visible = true;
+		}
+		targetImage.visible = true;
 		currentMissionLabel.text = text;
+		target_username = missionInfo.mission.target_username;
+		game_id = missionInfo.mission.game_id;
 		targetImage.image = missionInfo.mission.profile_picture;
 	});
 
 	Ti.App.addEventListener('network:game:viewmission:failure', function(missionInfo) {
+		target_username = null;
+		game_id = null;
+		shootTargetButton.visible = false;
+		targetImage.visible = false;
 		currentMissionLabel.text = 'Failed to load mission information.  Try again?';
 	});
 
