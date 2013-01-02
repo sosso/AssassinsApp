@@ -3,11 +3,16 @@ var logger = require('utils/logging');
 
 Ti.App.addEventListener('network:account:createuser', function(params) {
 	var createReq = Ti.Network.createHTTPClient();
+
 	Titanium.Media.showCamera({
 		success : function(event) {
 			if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
 				var image = event.media
 				createReq.open("POST", network.baseurl + '/account/createuser');
+				Ti.App.fireEvent('app:showiOSLoadingIndicator', {
+					message : 'Creating account. . .',
+					reason : 'account creation'
+				});
 				var reqParams = {
 					profile_picture : image,
 					username : params.username,
@@ -72,6 +77,10 @@ Ti.App.addEventListener('network:account:createuser', function(params) {
 Ti.App.addEventListener('network:account:login', function(params) {
 
 	var loginReq = Ti.Network.createHTTPClient();
+	Ti.App.fireEvent('app:showiOSLoadingIndicator', {
+		message : 'Logging you in. . .',
+		reason : 'login attempt'
+	});
 	loginReq.onload = function() {
 		Ti.App.fireEvent('app:hideiOSLoadingIndicator');
 		var json = this.responseText;
@@ -97,10 +106,7 @@ Ti.App.addEventListener('network:account:login', function(params) {
 			response : this.responseText
 		});
 	};
-	Ti.App.fireEvent('app:showiOSLoadingIndicator', {
-		message : 'Logging you in. . .',
-		reason : 'login attempt'
-	});
+
 	loginReq.open("POST", network.baseurl + '/account/login');
 	loginReq.send(params.params);
 });

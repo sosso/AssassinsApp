@@ -1,11 +1,12 @@
 function ApplicationTabGroup(Window) {
 	//create module instance
 	LoginCreateAccountChoose = require('ui/common/LoginCreateAccountChoose');
-	AccountMakerWindow = require('ui/common/AccountMakerWindow');
+	AccountMakerWindow = require('ui/common/account/AccountMakerWindow');
 	LoadingIndicator = require('ui/common/LoadingIndicator');
+	Toast = require('ui/common/Toast');
 	var loadingIndicator = new LoadingIndicator();
 
-	LoginWindow = require('ui/common/LoginWindow');
+	LoginWindow = require('ui/common/account/LoginWindow');
 	GameMenuWindow = require('ui/common/GameMenuWindow');
 	var self = Ti.UI.createTabGroup();
 

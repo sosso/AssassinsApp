@@ -66,7 +66,7 @@ function GameDetailWindow(gameData) {
 	});
 
 	shootTargetButton.addEventListener('click', function() {
-		AssassinateWindow = require('ui/common/game/AssassinateWindow');
+		require('ui/common/game/AssassinateWindow');
 		Ti.App.fireEvent('ui:assassinate', {
 			target_username : target_username,
 			game_id : gameData.game_id

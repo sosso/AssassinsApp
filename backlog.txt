@@ -21,10 +21,9 @@ bugs:
 	gm text displays for game detail (alive, etc)
 	game not displaying as started when start clicked
 to add:
-	please wait after picture takes + uploads
 	user email addresses
 	showing 'alive' when game not started for player
 	dont let ppl join game in progress
-	
+	loading indicator in starting game
 to check
 	join fails first try..?

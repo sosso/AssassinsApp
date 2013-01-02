@@ -68,5 +68,3 @@ function takeShot(missionInfo) {
 		mediaTypes : [Ti.Media.MEDIA_TYPE_PHOTO]
 	});
 };
-
-module.exports = AssassinateWindow;

@@ -3,6 +3,9 @@ var logger = require('utils/logging');
 
 Ti.App.addEventListener('network:game:start', function(params) {
 	var startReq = Ti.Network.createHTTPClient();
+	Ti.App.fireEvent('app:showiOSLoadingIndicator', {
+		message : 'Starting game. . .'
+	});
 	startReq.onload = function() {
 		Ti.App.fireEvent('app:hideiOSLoadingIndicator');
 		var json = this.responseText;
@@ -13,8 +16,14 @@ Ti.App.addEventListener('network:game:start', function(params) {
 			logger.error('Failed to parse auth json');
 		}
 		if (!response.reason && response.success == 'success') {
+			Ti.App.fireEvent('ui:toast', {
+				message : 'Game started'
+			});
 			Ti.App.fireEvent('network:game:start:success' + reqParams.game_id);
 		} else {
+			Ti.App.fireEvent('ui:toast', {
+				message : 'Game could not be started.  Reason: ' + response.reason
+			});
 			Ti.App.fireEvent('network:game:start:failure' + reqParams.game_id, {
 				reason : response.reason
 			});
@@ -39,14 +48,24 @@ Ti.App.addEventListener('network:game:start', function(params) {
 
 Ti.App.addEventListener('network:game:creategame', function(params) {
 	var createReq = Ti.Network.createHTTPClient();
+	Ti.App.fireEvent('app:showiOSLoadingIndicator', {
+		message : 'Creating game. . .',
+		reason : 'game creation'
+	});
 	createReq.onload = function() {
 		Ti.App.fireEvent('app:hideiOSLoadingIndicator');
 		var json = this.responseText;
 		try {
 			var response = JSON.parse(json);
 			if (!response.reason && response.success == 'success') {
+				Ti.App.fireEvent('ui:toast', {
+					message : 'Game created'
+				});
 				Ti.App.fireEvent('network:game:creategame:success');
 			} else {
+				Ti.App.fireEvent('ui:toast', {
+					message : 'Game not created.  Reason: ' + response.reason
+				});
 				Ti.App.fireEvent('network:game:creategame:failure', {
 					response : this.responseText
 				});
