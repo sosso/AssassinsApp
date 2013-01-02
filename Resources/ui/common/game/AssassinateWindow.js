@@ -1,33 +1,3 @@
-function AssassinateWindow(missionDetails) {
-	var self = Ti.UI.createWindow({
-		background : 'red',
-		layout : 'vertical'
-	});
-	var reticuleOverlay2 = Ti.UI.createImageView({
-		touchEnabled : false,
-		width : '15%',
-		height : '15%',
-		backgroundColor : 'blue',
-		image : '/images/reticule.png'
-	});
-
-	var shootButton = Ti.UI.createButton({
-		touchEnabled : true,
-		width : '100%',
-		height : '15%',
-		title : 'Shoot',
-		backgroundColor : 'pink'
-	});
-
-	shootButton.addEventListener('click', function() {
-		Ti.Media.takePicture();
-	});
-
-	self.add(reticuleOverlay2);
-	self.add(shootButton);
-	return self;
-};
-
 Ti.App.addEventListener('ui:assassinate', function(missionInfo) {
 	// myWin.add(reticuleOverlay);
 	// myWin.open();
@@ -60,7 +30,7 @@ function takeShot(missionInfo) {
 		zIndex : 2,
 		height : '15%',
 		title : 'Shoot',
-		backgroundColor : 'pink'
+		backgroundColor : 'black'
 	});
 
 	overlayView.add(shootButton);

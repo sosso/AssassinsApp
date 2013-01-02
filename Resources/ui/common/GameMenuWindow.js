@@ -16,7 +16,7 @@ function GameMenuWindow(title) {
 
 	gameListButton.addEventListener('click', function() {
 		Ti.App.fireEvent('app:showiOSLoadingIndicator', {
-			reason : 'Fetching your games. . .'
+			message : 'Fetching your games. . .'
 		});
 		require('network/game_membership_functions');
 		Ti.App.fireEvent('network:game:getall');

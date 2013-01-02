@@ -29,6 +29,9 @@ Ti.App.addEventListener('network:game:assassinate', function(params) {
 		shot_picture : params.shot_picture,
 		target_username : params.target_username
 	};
+	Ti.App.fireEvent('app:showiOSLoadingIndicator', {
+		message : 'Uploading your shot.  Please wait'
+	});
 	postReq.open("POST", network.baseurl + '/game/assassinate');
 	postReq.send(postParams);
 });
