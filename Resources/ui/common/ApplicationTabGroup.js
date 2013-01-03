@@ -32,8 +32,15 @@ function ApplicationTabGroup(Window) {
 	});
 	win2.containingTab = tab1;
 
-	self.addTab(tab1);
-	self.addTab(tab2);
+	//If they're already logged in, start them on the game screen.'
+	if (Ti.App.Properties.getString('username', '') != '' && Ti.App.Properties.getString('secret_token', '') != '') {
+		self.addTab(tab2);
+		self.addTab(tab1);
+	} else {
+		self.addTab(tab1);
+		self.addTab(tab2);
+	}
+
 	return self;
 };
 

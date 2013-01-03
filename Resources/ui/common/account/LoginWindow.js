@@ -88,7 +88,7 @@ LoginWindow = function() {
 	});
 	self.add(acctBtn);
 	acctBtn.addEventListener('click', function(e) {
-		AccountMakerWindow = require('ui/common/AccountMakerWindow');
+		AccountMakerWindow = require('ui/common/account/AccountMakerWindow');
 		new AccountMakerWindow().open();
 	});
 

@@ -9,7 +9,7 @@ function cameraError(error) {
 	var a = Titanium.UI.createAlertDialog({
 		title : 'Camera'
 	});
-	if (error.code == Titanium.Media.NO_CAMERA) {
+	if (error && error.code && error.code == Titanium.Media.NO_CAMERA) {
 		a.setMessage('Please run this test on device');
 	} else {
 		a.setMessage('Unexpected error: ' + error.code);
@@ -30,7 +30,8 @@ function takeShot(missionInfo) {
 		zIndex : 2,
 		height : '15%',
 		title : 'Shoot',
-		backgroundColor : 'black'
+		backgroundColor : 'black',
+		color : 'white'
 	});
 
 	overlayView.add(shootButton);

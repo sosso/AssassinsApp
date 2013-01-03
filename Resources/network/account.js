@@ -66,6 +66,10 @@ Ti.App.addEventListener('network:account:createuser', function(params) {
 				});
 			}
 		} catch(exception) {
+			Ti.App.fireEvent('app:accountCreationFailure', {
+				response : this.responseText
+			});
+			Ti.App.fireEvent('app:hideiOSLoadingIndicator');
 			logger.error('Error creating account');
 		}
 	}
