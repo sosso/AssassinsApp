@@ -33,9 +33,20 @@ function GameStatusView(game) {
 		ellipsize : true,
 		bubbleParent : true
 	}));
+	var color, status;
+	if (gameData.alive == true) {
+		color = 'green';
+		status = 'Alive';
+	} else if (gameData.alive == false) {
+		color = 'red';
+		status = 'Dead';
+	} else {
+		color = 'orange';
+		status = 'Shot!';
+	}
 	var playerLabel = Ti.UI.createLabel({
-		color : (gameData.alive ? 'green' : 'red'),
-		text : (gameData.alive ? 'Alive' : 'Dead'),
+		color : color,
+		text : status,
 		width : '25%',
 		height : 'auto',
 		ellipsize : true,
@@ -45,7 +56,7 @@ function GameStatusView(game) {
 
 	if (!gameData.started) {
 		playerLabel.text = 'Not started';
-		playerLabel.color = 'orange';
+		playerLabel.color = 'pink';
 	}
 	if (gameData.isGameMaster) {
 		playerLabel.color = 'yellow';
@@ -74,12 +85,12 @@ function GameStatusView(game) {
 		});
 		view.add(startGameButton);
 	}
-	
+
 	view.add(Ti.UI.createImageView({
 		image : '/images/arrow.png',
 		width : '10%',
 		height : 'auto',
-		bubbleParent:true
+		bubbleParent : true
 	}));
 
 	Ti.App.addEventListener('network:game:start:failure' + gameData.game_id, function(e) {
