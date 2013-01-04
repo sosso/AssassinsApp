@@ -45,7 +45,13 @@ function GameDetailWindow(gameData) {
 			});
 
 			resolveShotButton.addEventListener('click', function() {
-				alert('resolving shot');
+				Ti.App.fireEvent('app:showiOSLoadingIndicator', {
+					message : 'Getting shot information. . .'
+				});
+				require('network/ShotViewer');
+				Ti.App.fireEvent('network:game:shot:view', {
+					shot_id : gameData.pending_shot
+				});
 			});
 			self.add(resolveShotButton);
 		} else {

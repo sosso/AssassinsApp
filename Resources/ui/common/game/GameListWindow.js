@@ -3,11 +3,12 @@ function GameStatusView(game) {
 		title : game.game_friendly_name,
 		game_id : game.game_id,
 		game_password : game.game_password,
+		alive : game.alive,
+		started : game.started,
+		completed : game.completed,
+		isGameMaster : game.is_game_master,
+		pending_shot : game.pending_shot
 	};
-	gameData.alive = game.alive;
-	gameData.started = game.started;
-	gameData.completed = game.completed;
-	gameData.isGameMaster = game.is_game_master;
 	var view = Ti.UI.createTableViewRow({
 		className : 'GameStatus',
 		touchEnabled : true,
