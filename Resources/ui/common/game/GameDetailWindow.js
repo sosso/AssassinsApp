@@ -52,6 +52,11 @@ function GameDetailWindow(gameData) {
 				Ti.App.fireEvent('network:game:shot:view', {
 					shot_id : gameData.pending_shot
 				});
+
+				Ti.App.addEventListener('network:game:shot:view:success', function(shotInfo) {
+					ShotViewWindow = require('ui/common/game/ShotViewWindow');
+					new ShotViewWindow(shotInfo).open();
+				});
 			});
 			self.add(resolveShotButton);
 		} else {

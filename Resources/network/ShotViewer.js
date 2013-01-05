@@ -32,8 +32,8 @@ Ti.App.addEventListener('network:game:shot:view', function(params) {
 });
 
 Ti.App.addEventListener('network:game:shot:decide', function(params) {
-	var getReq = Ti.Network.createHTTPClient();
-	getReq.onload = function() {
+	var postReq = Ti.Network.createHTTPClient();
+	postReq.onload = function() {
 		Ti.App.fireEvent('app:hideiOSLoadingIndicator');
 		var json = this.responseText;
 		try {
@@ -46,17 +46,19 @@ Ti.App.addEventListener('network:game:shot:decide', function(params) {
 		}
 
 	};
-	getReq.onerror = function() {
+	postReq.onerror = function() {
 		Ti.App.fireEvent('app:hideiOSLoadingIndicator');
 		Ti.App.fireEvent('network:game:viewmission:failure', {
 			response : this.responseText
 		});
 	};
-	var getParams = {
+	var postParams = {
 		username : Ti.App.Properties.getString('username', ''),
 		secret_token : Ti.App.Properties.getString('secret_token', ''),
-		game_id : params.game_id
+		shot_id : params.shot_id,
+		shot_upheld : params.shot_upheld,
+		claim : params.claim || ''
 	};
-	getReq.open("GET", network.baseurl + '/game/viewmission');
-	getReq.send(getParams);
-}); 
+	postReq.open("POST", network.baseurl + '/game/shot');
+	postReq.send(postParams);
+});
