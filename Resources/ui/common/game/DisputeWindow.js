@@ -60,6 +60,6 @@ DisputeWindow = function(shot_id) {
 	});
 	return self;
 
-};
+}
 
 module.exports = DisputeWindow;

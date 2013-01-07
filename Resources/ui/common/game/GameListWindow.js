@@ -1,3 +1,5 @@
+
+
 function GameStatusView(game) {
 	gameData = {
 		title : game.game_friendly_name,
@@ -101,6 +103,12 @@ function GameStatusView(game) {
 	return view;
 }
 
+function WTF(title) {
+	return Ti.UI.createWindow({
+		backgroundColor : 'white'
+	});
+}
+
 function GameListWindow(gamesJSON) {
 	var self = Ti.UI.createWindow({
 		backgroundColor : 'black',
@@ -108,22 +116,24 @@ function GameListWindow(gamesJSON) {
 	});
 	var data = [];
 	for (var i = 0, len = gamesJSON.length; i < len; i++) {
-		data.push(new GameStatusView(gamesJSON[i]));
+		data.push(GameStatusView(gamesJSON[i]));
 	}
 	// create table view
 	var tableview = Titanium.UI.createTableView({
 		data : data
 	});
-
+	
+	var GameDetailWindow = require('ui/common/game/GameDetailWindow');
 	tableview.addEventListener('click', function(e) {
 		if (e.source.bubbleParent && e.row.hasDetail) {//ignore presses on the button
-			GameDetailWindow = require('ui/common/game/GameDetailWindow');
-			new GameDetailWindow(e.row.data).open();
+			var mywin = GameDetailWindow(e.row.data);
+			mywin.open();
 		}
 	});
 
 	self.add(tableview);
 	return self;
-};
+}
 
 module.exports = GameListWindow;
+

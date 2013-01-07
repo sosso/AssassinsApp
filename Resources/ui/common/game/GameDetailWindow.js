@@ -1,5 +1,4 @@
 function GameDetailWindow(gameData) {
-
 	var self = Ti.UI.createWindow({
 		backgroundColor : 'black',
 		exitOnClose : false,
@@ -130,35 +129,33 @@ function GameDetailWindow(gameData) {
 				currentMissionLabel.text = 'Failed to load mission information.  Try again?';
 			});
 		}
+	} else {
+		var resolveDisputeButton = Ti.UI.createButton({
+			title : 'Confirm/reject disputes',
+			width : '100%',
+			height : 'auto',
+		});
 
+		require('network/DisputeViewer');
+
+		resolveDisputeButton.addEventListener('click', function() {
+			Ti.App.fireEvent('app:showiOSLoadingIndicator', {
+				message : 'Getting dispute information. . .'
+			});
+
+			Ti.App.fireEvent('network:game:dispute:view', {
+				game_id : gameData.game_id
+			});
+
+			Ti.App.addEventListener('network:game:dispute:view:success', function(disputeInfo) {
+				DisputeListWindow = require('ui/common/game/DisputeListWindow');
+				new DisputeListWindow(disputeInfo.disputes).open();
+			});
+		});
+		self.add(resolveDisputeButton);
 	}
 
 	return self;
 }
-
-function GameListWindow(gamesJSON) {
-	var self = Ti.UI.createWindow({
-		backgroundColor : 'black',
-		exitOnClose : false
-	});
-	var data = [];
-	for (var i = 0, len = gamesJSON.length; i < len; i++) {
-		data.push(new GameStatusView(gamesJSON[i]));
-	}
-	// create table view
-	var tableview = Titanium.UI.createTableView({
-		data : data
-	});
-
-	tableview.addEventListener('click', function(e) {
-		if (e.row.hasDetail) {
-			GameDetailWindow = require('ui/common/game/GameDetailWindow');
-			new GameDetailWindow(e.row.data).open();
-		}
-	});
-
-	self.add(tableview);
-	return self;
-};
 
 module.exports = GameDetailWindow;

@@ -52,6 +52,6 @@ function GameMenuWindow(title) {
 	});
 
 	return self;
-};
+}
 
 module.exports = GameMenuWindow;

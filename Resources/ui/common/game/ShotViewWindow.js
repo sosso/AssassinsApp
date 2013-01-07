@@ -64,12 +64,17 @@ ShotViewWindow = function(shotInfo) {
 		});
 	});
 
-	Ti.App.addEventListener('network:game:join:failure', function() {
-		alert('Join failed.  Please enter the game ID and password and try again.');
+	Ti.App.addEventListener('network:game:shot:decide:success', function() {
+		Ti.App.fireEvent('ui:toast', {
+			message : 'Kill confirmed.'
+		});
+		self.close();
 	});
 
-	Ti.App.addEventListener('network:game:join:success', function() {
-		self.close();
+	Ti.App.addEventListener('network:game:shot:decide:failure', function() {
+		Ti.App.fireEvent('ui:toast', {
+			message : 'Confirmation failed.  Please try again.'
+		});
 	});
 
 	return self;
