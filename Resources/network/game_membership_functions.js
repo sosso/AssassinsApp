@@ -18,7 +18,7 @@ Ti.App.addEventListener('network:game:join', function(params) {
 				Ti.App.fireEvent('network:game:join:success');
 			} else {
 				Ti.App.fireEvent('ui:toast', {
-					message : 'Failed to join game.  Reason: ' + resposne.reason
+					message : 'Failed to join game.  Reason: ' + response.reason
 				});
 				Ti.App.fireEvent('network:game:join:failure', {
 					response : this.responseText

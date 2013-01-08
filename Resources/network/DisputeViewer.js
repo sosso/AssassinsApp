@@ -57,9 +57,10 @@ Ti.App.addEventListener('network:game:dispute:decide', function(params) {
 		secret_token : Ti.App.Properties.getString('secret_token', ''),
 		dispute_id : params.dispute_id,
 		dispute_upheld : params.dispute_upheld,
-		claim : params.claim || ''
+		gm_decision_reason : params.gm_decision_reason || '',
+		game_id : params.game_id
 	};
-	postReq.open("POST", network.baseurl + '/game/dispute');
+	postReq.open("POST", network.baseurl + '/game/disputes');
 	postReq.send(postParams);
 });
 

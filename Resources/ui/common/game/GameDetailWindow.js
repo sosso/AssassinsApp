@@ -58,7 +58,7 @@ function GameDetailWindow(gameData) {
 				});
 			});
 			self.add(resolveShotButton);
-		} else {
+		} else if (status == 'Alive') {
 			var getMissionButton = Ti.UI.createButton({
 				title : 'Get current target',
 				width : '100%',

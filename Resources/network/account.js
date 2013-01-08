@@ -28,7 +28,7 @@ Ti.App.addEventListener('network:account:createuser', function(params) {
 			var a = Titanium.UI.createAlertDialog({
 				title : 'Camera'
 			});
-			if (error.code == Titanium.Media.NO_CAMERA) {
+			if (error && error.code == Titanium.Media.NO_CAMERA) {
 				a.setMessage('Please run this test on device');
 			} else {
 				a.setMessage('Unexpected error: ' + error.code);
@@ -40,11 +40,14 @@ Ti.App.addEventListener('network:account:createuser', function(params) {
 			var a = Titanium.UI.createAlertDialog({
 				title : 'Camera'
 			});
-			if (error.code == Titanium.Media.NO_CAMERA) {
-				a.setMessage('Please run this test on device');
-			} else {
-				a.setMessage('Unexpected error: ' + error.code);
+			if (error) {
+				if (error.code == Titanium.Media.NO_CAMERA) {
+					a.setMessage('Please run this test on device');
+				} else {
+					a.setMessage('Unexpected error: ' + error.code);
+				}
 			}
+
 			a.show();
 		},
 		saveToPhotoGallery : false,

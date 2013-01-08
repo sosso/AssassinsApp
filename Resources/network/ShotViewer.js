@@ -62,5 +62,3 @@ Ti.App.addEventListener('network:game:shot:decide', function(params) {
 	postReq.open("POST", network.baseurl + '/game/shot');
 	postReq.send(postParams);
 });
-
-module.exports = {};

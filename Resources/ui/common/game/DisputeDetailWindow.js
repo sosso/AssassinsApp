@@ -28,57 +28,77 @@ function DisputeDetailWindow(disputeData) {
 		image : disputeData.shot.shot_picture
 	}));
 
-	// if (status == 'Shot!') {
-	// var resolveShotButton = Ti.UI.createButton({
-	// title : 'Confirm/dispute that you were shot and killed',
-	// width : '100%',
-	// height : 'auto',
-	// });
-	//
-	// resolveShotButton.addEventListener('click', function() {
-	// Ti.App.fireEvent('app:showiOSLoadingIndicator', {
-	// message : 'Getting shot information. . .'
-	// });
-	// require('network/ShotViewer');
-	// Ti.App.fireEvent('network:dispute:shot:view', {
-	// shot_id : disputeData.pending_shot
-	// });
-	//
-	// Ti.App.addEventListener('network:dispute:shot:view:success', function(shotInfo) {
-	// ShotViewWindow = require('ui/common/dispute/ShotViewWindow');
-	// new ShotViewWindow(shotInfo).open();
-	// });
-	// });
-	// self.add(resolveShotButton);
-	//
-	// }
+	var buttonWrapper = Ti.UI.createView({
+		backgroundColor : 'black',
+		width : '100%',
+		height : '20%',
+		layout : 'horizontal'
+	});
+	self.add(buttonWrapper);
+
+	var disputeButton = Titanium.UI.createButton({
+		title : 'Reject Kill',
+		width : '40%',
+		left : '5%',
+		right : '5%',
+		bottom : '10%',
+		borderRadius : 1,
+		font : {
+			fontFamily : 'Arial',
+			fontWeight : 'bold',
+			fontSize : 14
+		}
+	});
+	buttonWrapper.add(disputeButton);
+
+	var confirmButton = Titanium.UI.createButton({
+		title : 'Confirm Kill',
+		width : '40%',
+		left : '5%',
+		right : '5%',
+		bottom : '10%',
+		borderRadius : 1,
+		font : {
+			fontFamily : 'Arial',
+			fontWeight : 'bold',
+			fontSize : 14
+		}
+	});
+	buttonWrapper.add(confirmButton);
+	self.add(buttonWrapper);
+
+	confirmButton.addEventListener('click', function() {
+		Ti.App.fireEvent('network:game:dispute:decide', {
+			dispute_id : disputeData.dispute_id,
+			dispute_upheld : 'True',
+			game_id:disputeData.game_id,
+			gm_decision_reason : 'Good shot!'
+		});
+	});
+
+	disputeButton.addEventListener('click', function() {
+		Ti.App.fireEvent('network:game:dispute:decide', {
+			dispute_id : disputeData.dispute_id,
+			dispute_upheld : 'False',
+			game_id:disputeData.game_id,
+			gm_decision_reason : 'Kill invalid'
+		});
+	});
+
+	Ti.App.addEventListener('network:game:dispute:decide:success', function() {
+		Ti.App.fireEvent('ui:toast', {
+			message : 'Decision submitted.'
+		});
+		self.close();
+	});
+
+	Ti.App.addEventListener('network:game:dispute:decide:failure', function() {
+		Ti.App.fireEvent('ui:toast', {
+			message : 'Confirmation failed.  Please try again.'
+		});
+	});
 
 	return self;
 }
-
-function DisputeListWindow(disputesJSON) {
-	var self = Ti.UI.createWindow({
-		backgroundColor : 'black',
-		exitOnClose : false
-	});
-	var data = [];
-	for (var i = 0, len = disputesJSON.length; i < len; i++) {
-		data.push(new DisputeStatusView(disputesJSON[i]));
-	}
-	// create table view
-	var tableview = Titanium.UI.createTableView({
-		data : data
-	});
-
-	tableview.addEventListener('click', function(e) {
-		if (e.row.hasDetail) {
-			DisputeDetailWindow = require('ui/common/dispute/DisputeDetailWindow');
-			new DisputeDetailWindow(e.row.data).open();
-		}
-	});
-
-	self.add(tableview);
-	return self;
-};
 
 module.exports = DisputeDetailWindow;

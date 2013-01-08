@@ -4,7 +4,8 @@ function DisputeStatusView(dispute) {
 		dispute_id : dispute.dispute.id,
 		confirmation_expiration : dispute.dispute.confirmation_expiration,
 		timestamp : dispute.dispute.timestamp,
-		shot : dispute.shot
+		shot : dispute.shot,
+		game_id : dispute.dispute.game_id
 	};
 	var view = Ti.UI.createTableViewRow({
 		className : 'DisputeStatus',
