@@ -31,19 +31,24 @@ if (Ti.version < 1.8) {
 		Window = require('ui/handheld/ApplicationWindow');
 	}
 
+	// Ti.App.addEventListener('paused', function() {
+	// if (!service) {
+	// var intent = Titanium.Android.createServiceIntent({
+	// url : 'services/notification_poller_android.js'
+	// });
+	// // Service should run its code every 20 seconds.
+	// intent.putExtra('interval', 1000 * 20);
+	// service = Titanium.Android.createService(intent);
+	// }
+	// service.start();
+	// });
+
 	var intent = Titanium.Android.createServiceIntent({
 		url : 'services/notification_poller_android.js'
 	});
-	// Service should run its code every 20 seconds.
-	intent.putExtra('interval', 1000 * 20);
-
+	// Service should run its code every x miliseconds
+	intent.putExtra('interval', 1000 * 60 * 10);
 	var service = Titanium.Android.createService(intent);
-	service.addEventListener('resume', function(e) {
-		Titanium.API.info('Service code resumes');
-	});
-	service.addEventListener('pause', function(e) {
-		Titanium.API.info('Service code pauses');
-	});
 	service.start();
 
 	var ApplicationTabGroup = require('ui/common/ApplicationTabGroup');

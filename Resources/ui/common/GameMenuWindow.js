@@ -23,12 +23,12 @@ function GameMenuWindow(title) {
 
 	Ti.App.addEventListener('network:game:getall:success', function(gamesJSON) {
 		var gw = new GameListWindow(gamesJSON.games);
-		if(self.tab){
+		if (self.tab) {
 			self.tab.open(gw);
-		}else{
+		} else {
 			self.containingTab.open(gw);
 		}
-		
+
 	});
 
 	var gameJoinButton = Ti.UI.createButton({
