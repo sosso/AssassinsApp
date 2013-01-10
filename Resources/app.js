@@ -47,7 +47,7 @@ if (Ti.version < 1.8) {
 		url : 'services/notification_poller_android.js'
 	});
 	// Service should run its code every x miliseconds
-	intent.putExtra('interval', 1000 * 60 * 10);
+	intent.putExtra('interval', 1000 * 10);
 	var service = Titanium.Android.createService(intent);
 	service.start();
 

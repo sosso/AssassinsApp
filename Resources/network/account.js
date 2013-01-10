@@ -110,7 +110,7 @@ Ti.App.addEventListener('network:account:login', function(params) {
 		}
 
 	};
-	loginReq.onerror = function() {
+	loginReq.onerror = function(error) {
 		Ti.App.fireEvent('app:hideiOSLoadingIndicator');
 		Ti.App.fireEvent('network:account:login:failure', {
 			response : this.responseText

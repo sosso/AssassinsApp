@@ -129,5 +129,6 @@ function getMissions() {
 
 }
 
+alertOfGameStarted('Anthony\'s Friends');
 getGameStatuses();
 getMissions();
