@@ -18,13 +18,15 @@ function GameStatusView(game) {
 		backgroundColor : 'black',
 		hasDetail : true,
 		bubbleParent : true,
-		height : Ti.UI.SIZE
+		// title : 'test',
+		color : 'white',
+		height : (Ti.Platform.osname === 'android' ? Ti.UI.FILL : '12.5%')
 	});
-	view.add(Ti.UI.createView({
-		backgroundColor : 'black',
-		width : 0,
-		height : '30%'
-	}));
+	// view.add(Ti.UI.createView({
+	// backgroundColor : 'black',
+	// width : 0,
+	// height : '30%'
+	// }));
 	view.add(Ti.UI.createLabel({
 		color : 'white',
 		text : gameData.title,
@@ -49,7 +51,7 @@ function GameStatusView(game) {
 		color : color,
 		text : status,
 		width : '25%',
-		height : 'auto',
+		height : (Ti.Platform.osname === 'android' ? Ti.UI.FILL : '85%'),
 		ellipsize : true,
 		bubbleParent : true
 	});
@@ -65,7 +67,7 @@ function GameStatusView(game) {
 
 		var startGameButton = Ti.UI.createButton({
 			width : '25%',
-			height : Ti.UI.FILL,
+			height : (Ti.Platform.osname === 'android' ? Ti.UI.FILL : '85%'),
 			title : 'Start Game',
 			bubbleParent : false
 		});
@@ -90,7 +92,7 @@ function GameStatusView(game) {
 	view.add(Ti.UI.createImageView({
 		image : '/images/arrow.png',
 		width : '10%',
-		height : 'auto',
+		height : (Ti.Platform.osname === 'android' ? Ti.UI.FILL : '0'),
 		bubbleParent : true
 	}));
 
@@ -99,12 +101,6 @@ function GameStatusView(game) {
 	});
 
 	return view;
-}
-
-function WTF(title) {
-	return Ti.UI.createWindow({
-		backgroundColor : 'white'
-	});
 }
 
 function GameListWindow(gamesJSON) {
@@ -118,7 +114,9 @@ function GameListWindow(gamesJSON) {
 	}
 	// create table view
 	var tableview = Titanium.UI.createTableView({
-		data : data
+		data : data,
+		backgroundColor : 'black'
+
 	});
 
 	var GameDetailWindow = require('ui/common/game/GameDetailWindow');
