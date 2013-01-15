@@ -1,7 +1,6 @@
 function AccountMakerWindow() {
 	var self = Titanium.UI.createWindow({
 		backgroundColor : 'black',
-		windowSoftInputMode : Ti.UI.Android.SOFT_INPUT_ADJUST_PAN,
 		orientationModes : [Ti.UI.PORTRAIT, Ti.UI.UPSIDE_PORTRAIT]
 	});
 
@@ -11,7 +10,6 @@ function AccountMakerWindow() {
 		top : 0,
 		showVerticalScrollIndicator : true,
 		showHorizontalScrollIndicator : false,
-		windowSoftInputMode : Ti.UI.Android.SOFT_INPUT_ADJUST_PAN
 	});
 	self.add(scrollView);
 

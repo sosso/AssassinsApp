@@ -27,6 +27,6 @@ Ti.App.addEventListener('network:game:viewmission', function(params) {
 		secret_token : Ti.App.Properties.getString('secret_token', ''),
 		game_id : params.game_id
 	};
-	getReq.open("GET", network.baseurl + '/game/viewmission');
-	getReq.send(getParams);
+	getReq.open("GET", network.baseurl + '/game/viewmission?' + network.getURL(getParams));
+	getReq.send();
 });

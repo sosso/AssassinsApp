@@ -1,6 +1,4 @@
 Ti.App.addEventListener('ui:assassinate', function(missionInfo) {
-	// myWin.add(reticuleOverlay);
-	// myWin.open();
 	takeShot(missionInfo);
 });
 

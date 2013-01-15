@@ -54,11 +54,15 @@ function GameDetailWindow(gameData) {
 
 				Ti.App.addEventListener('network:game:shot:view:success', function(shotInfo) {
 					ShotViewWindow = require('ui/common/game/ShotViewWindow');
-					new ShotViewWindow(shotInfo).open();
+					if (self.tab) {
+						self.tab.open(new ShotViewWindow(shotInfo));
+					} else {
+						self.containingTab.open(new ShotViewWindow(shotInfo));
+					}
 				});
 			});
 			self.add(resolveShotButton);
-		} else if (status == 'Alive') {
+		} else if (status == 'Alive' && gameData.started) {
 			var getMissionButton = Ti.UI.createButton({
 				title : 'Get current target',
 				width : '100%',

@@ -1,6 +1,14 @@
 var network = require('network/constants');
 var logger = require('utils/logging');
 
+function getURL(obj) {
+	var str = [];
+	for (var p in obj) {
+		str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+	}
+	return str.join("&");
+}
+
 Ti.App.addEventListener('network:game:join', function(params) {
 	Ti.App.fireEvent('app:showiOSLoadingIndicator', {
 		message : 'Joining game. . .'
@@ -36,7 +44,7 @@ Ti.App.addEventListener('network:game:join', function(params) {
 		});
 	};
 	params.params.username = Ti.App.Properties.getString('username', '');
-	params.params.secret_token = Ti.App.Properties.getString('secret_token', '');
+	params.params.sec2ret_token = Ti.App.Properties.getString('secret_token', '');
 	joinReq.open("POST", network.baseurl + '/game/');
 	joinReq.send(params.params);
 });
@@ -60,16 +68,19 @@ Ti.App.addEventListener('network:game:getall', function(params) {
 		}
 
 	};
-	getReq.onerror = function() {
+	getReq.onerror = function(error) {
 		Ti.App.fireEvent('app:hideiOSLoadingIndicator');
 		Ti.App.fireEvent('network:game:getall:failure', {
 			response : this.responseText
 		});
+
 	};
+
 	var getParams = {
 		username : Ti.App.Properties.getString('username', ''),
 		secret_token : Ti.App.Properties.getString('secret_token', '')
 	};
-	getReq.open("GET", network.baseurl + '/game/');
-	getReq.send(getParams);
+	var addedToURL = getURL(getParams);
+	getReq.open("GET", network.baseurl + '/game/?' + addedToURL);
+	getReq.send();
 });

@@ -27,8 +27,8 @@ Ti.App.addEventListener('network:game:shot:view', function(params) {
 		secret_token : Ti.App.Properties.getString('secret_token', ''),
 		shot_id : params.shot_id
 	};
-	getReq.open("GET", network.baseurl + '/game/shot');
-	getReq.send(getParams);
+	getReq.open("GET", network.baseurl + '/game/shot?' + network.getURL(getParams));
+	getReq.send();
 });
 
 Ti.App.addEventListener('network:game:shot:decide', function(params) {
@@ -61,4 +61,4 @@ Ti.App.addEventListener('network:game:shot:decide', function(params) {
 	};
 	postReq.open("POST", network.baseurl + '/game/shot');
 	postReq.send(postParams);
-});
+}); 

@@ -27,8 +27,8 @@ Ti.App.addEventListener('network:game:dispute:view', function(params) {
 		secret_token : Ti.App.Properties.getString('secret_token', ''),
 		game_id : params.game_id
 	};
-	getReq.open("GET", network.baseurl + '/game/disputes');
-	getReq.send(getParams);
+	getReq.open("GET", network.baseurl + '/game/disputes?' + network.getURL(getParams));
+	getReq.send();
 });
 
 Ti.App.addEventListener('network:game:dispute:decide', function(params) {

@@ -2,7 +2,7 @@ function ApplicationWindow(title) {
 	AccountMakerWindow = require('ui/common/account/AccountMakerWindow');
 	LoginWindow = require('ui/common/account/LoginWindow');
 	var self = Ti.UI.createWindow({
-		title : title,
+		title : 'Account',
 		backgroundColor : 'white',
 		orientationModes : [Ti.UI.PORTRAIT, Ti.UI.UPSIDE_PORTRAIT]
 	});
@@ -16,7 +16,11 @@ function ApplicationWindow(title) {
 	self.add(loginButton);
 
 	loginButton.addEventListener('click', function() {
-		self.containingTab.open(new LoginWindow());
+		if (self.tab) {
+			self.tab.open(new LoginWindow());
+		} else {
+			self.containingTab.open(new LoginWindow());
+		}
 	});
 
 	var accountCreatorButton = Ti.UI.createButton({
@@ -28,7 +32,11 @@ function ApplicationWindow(title) {
 	self.add(accountCreatorButton);
 
 	accountCreatorButton.addEventListener('click', function() {
-		self.containingTab.open(new AccountMakerWindow());
+		if (self.tab) {
+			self.tab.open(new AccountMakerWindow());
+		} else {
+			self.containingTab.open(new AccountMakerWindow());
+		}
 	});
 
 	return self;

@@ -60,8 +60,11 @@ function DisputeListWindow(disputesJSON) {
 	DisputeDetailWindow = require('ui/common/game/DisputeDetailWindow');
 	tableview.addEventListener('click', function(e) {
 		if (e.source.bubbleParent && e.row.hasDetail) {//ignore presses on the button
-
-			new DisputeDetailWindow(e.row.data).open();
+			if (self.tab) {
+				self.tab.open(new DisputeDetailWindow(e.row.data));
+			} else {
+				self.containingTab.open(new DisputeDetailWindow(e.row.data));
+			}
 		}
 	});
 

@@ -2,7 +2,7 @@ function GameMenuWindow(title) {
 	GameListWindow = require('ui/common/game/GameListWindow');
 	var ButtonStyle = require('ui/styles/Styles').ButtonStyle;
 	var self = Ti.UI.createWindow({
-		title : title,
+		title : 'Game Menu',
 		backgroundColor : 'white',
 		orientationModes : [Ti.UI.PORTRAIT, Ti.UI.UPSIDE_PORTRAIT],
 		layout : 'vertical'
@@ -20,7 +20,6 @@ function GameMenuWindow(title) {
 		require('network/game_membership_functions');
 		Ti.App.fireEvent('network:game:getall');
 	});
-
 	Ti.App.addEventListener('network:game:getall:success', function(gamesJSON) {
 		var gw = new GameListWindow(gamesJSON.games);
 		if (self.tab) {
@@ -28,7 +27,6 @@ function GameMenuWindow(title) {
 		} else {
 			self.containingTab.open(gw);
 		}
-
 	});
 
 	var gameJoinButton = Ti.UI.createButton({
@@ -41,7 +39,12 @@ function GameMenuWindow(title) {
 
 	gameJoinButton.addEventListener('click', function() {
 		JoinGameWindow = require('ui/common/game/JoinGameWindow');
-		self.containingTab.open(new JoinGameWindow());
+		var gw = new JoinGameWindow();
+		if (self.tab) {
+			self.tab.open(gw);
+		} else {
+			self.containingTab.open(gw);
+		}
 	});
 	var gameCreateButton = Ti.UI.createButton({
 		height : ButtonStyle.buttonHeight,
@@ -53,7 +56,11 @@ function GameMenuWindow(title) {
 
 	gameCreateButton.addEventListener('click', function() {
 		GameMakerWindow = require('ui/common/game/GameMakerWindow');
-		self.containingTab.open(new GameMakerWindow());
+		if (self.tab) {
+			self.tab.open(new GameMakerWindow());
+		} else {
+			self.containingTab.open(new GameMakerWindow());
+		}
 	});
 
 	return self;

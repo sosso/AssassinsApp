@@ -3,8 +3,8 @@
     <property name="ti.android.runtime">v8</property>
     <deployment-targets>
         <target device="mobileweb">false</target>
-        <target device="iphone">false</target>
-        <target device="ipad">false</target>
+        <target device="iphone">true</target>
+        <target device="ipad">true</target>
         <target device="android">true</target>
         <target device="blackberry">false</target>
     </deployment-targets>
@@ -38,10 +38,11 @@
         </orientations>
     </iphone>
     <android xmlns:android="http://schemas.android.com/apk/res/android">
-    <services>
-        <service url="services/notification_poller_android.js" type="interval"/>
-    </services>
-</android>
+        <tool-api-level>15</tool-api-level>
+        <services>
+            <service type="interval" url="services/notification_poller_android.js"/>
+        </services>
+    </android>
     <mobileweb>
         <precache/>
         <splash>

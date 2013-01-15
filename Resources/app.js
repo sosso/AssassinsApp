@@ -42,14 +42,15 @@ if (Ti.version < 1.8) {
 	// }
 	// service.start();
 	// });
-
-	var intent = Titanium.Android.createServiceIntent({
-		url : 'services/notification_poller_android.js'
-	});
-	// Service should run its code every x miliseconds
-	intent.putExtra('interval', 1000 * 10);
-	var service = Titanium.Android.createService(intent);
-	service.start();
+	if (osname === 'android') {
+		var intent = Titanium.Android.createServiceIntent({
+			url : 'services/notification_poller_android.js'
+		});
+		// Service should run its code every x miliseconds
+		intent.putExtra('interval', 1000 * 10);
+		var service = Titanium.Android.createService(intent);
+		service.start();
+	}
 
 	var ApplicationTabGroup = require('ui/common/ApplicationTabGroup');
 	new ApplicationTabGroup(Window).open();

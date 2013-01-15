@@ -1,5 +1,3 @@
-
-
 function GameStatusView(game) {
 	gameData = {
 		title : game.game_friendly_name,
@@ -122,12 +120,16 @@ function GameListWindow(gamesJSON) {
 	var tableview = Titanium.UI.createTableView({
 		data : data
 	});
-	
+
 	var GameDetailWindow = require('ui/common/game/GameDetailWindow');
 	tableview.addEventListener('click', function(e) {
 		if (e.source.bubbleParent && e.row.hasDetail) {//ignore presses on the button
 			var mywin = GameDetailWindow(e.row.data);
-			mywin.open();
+			if (self.tab) {
+				self.tab.open(mywin);
+			} else {
+				self.containingTab.open(mywin);
+			}
 		}
 	});
 

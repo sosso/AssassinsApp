@@ -89,7 +89,11 @@ LoginWindow = function() {
 	self.add(acctBtn);
 	acctBtn.addEventListener('click', function(e) {
 		AccountMakerWindow = require('ui/common/account/AccountMakerWindow');
-		new AccountMakerWindow().open();
+		if (self.tab) {
+			self.tab.open(new AccountMakerWindow());
+		} else {
+			self.containingTab.open(new AccountMakerWindow());
+		}
 	});
 
 	loginBtn.addEventListener('click', function() {

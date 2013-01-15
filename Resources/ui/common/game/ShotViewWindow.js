@@ -53,7 +53,11 @@ ShotViewWindow = function(shotInfo) {
 
 	disputeButton.addEventListener('click', function() {
 		DisputeWindow = require('ui/common/game/DisputeWindow');
-		new DisputeWindow(shotInfo.shot.shot_id).open();
+		if (self.tab) {
+			self.tab.open(new DisputeWindow(shotInfo.shot.shot_id));
+		} else {
+			self.containingTab.open(new DisputeWindow(shotInfo.shot.shot_id));
+		}
 	});
 
 	confirmButton.addEventListener('click', function() {
