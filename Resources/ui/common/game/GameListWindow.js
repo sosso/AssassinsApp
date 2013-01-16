@@ -14,7 +14,7 @@ function GameStatusView(game) {
 		touchEnabled : true,
 		// height : '100%',
 		// width : '100%',		data : gameData,
-		layout : 'horizontal',
+		// layout : 'horizontal',
 		backgroundColor : 'black',
 		hasDetail : true,
 		bubbleParent : true,
@@ -22,19 +22,33 @@ function GameStatusView(game) {
 		color : 'white',
 		height : (Ti.Platform.osname === 'android' ? Ti.UI.FILL : '12.5%')
 	});
-	// view.add(Ti.UI.createView({
-	// backgroundColor : 'black',
-	// width : 0,
-	// height : '30%'
-	// }));
-	view.add(Ti.UI.createLabel({
+
+	var wrapper = Ti.UI.createView({
+		backgroundColor : 'black',
+		layout : 'horizontal',
+		width : '100%',
+		height : '100%',
+		bubbleParent : true
+	});
+	view.add(wrapper);
+
+	wrapper.add(Ti.UI.createView({
+		backgroundColor : 'black',
+		width : 0,
+		height : '30%'
+	}));
+
+	wrapper.add(Ti.UI.createLabel({
 		color : 'white',
 		text : gameData.title,
-		left : 0,
+		left : 2,
 		width : '40%',
 		height : 'auto',
 		ellipsize : true,
-		bubbleParent : true
+		bubbleParent : true,
+		center : {
+			y : '50%'
+		}
 	}));
 	var color, status;
 	if (gameData.alive == true) {
@@ -53,9 +67,12 @@ function GameStatusView(game) {
 		width : '25%',
 		height : (Ti.Platform.osname === 'android' ? Ti.UI.FILL : '85%'),
 		ellipsize : true,
-		bubbleParent : true
+		bubbleParent : true,
+		center : {
+			y : '50%'
+		}
 	});
-	view.add(playerLabel);
+	wrapper.add(playerLabel);
 
 	if (!gameData.started) {
 		playerLabel.text = 'Not started';
@@ -66,10 +83,13 @@ function GameStatusView(game) {
 		playerLabel.text = 'Game Master';
 
 		var startGameButton = Ti.UI.createButton({
-			width : '25%',
+			width : (Ti.Platform.osname === 'android' ? '25%' : '32%'),
 			height : (Ti.Platform.osname === 'android' ? Ti.UI.FILL : '85%'),
-			title : 'Start Game',
-			bubbleParent : false
+			title : (Ti.Platform.osname === 'android' ? 'Start Game' : 'Start Game'),
+			bubbleParent : false,
+			center : {
+				y : '50%'
+			}
 		});
 
 		Ti.App.addEventListener('network:game:start:success' + gameData.game_id, function() {
@@ -86,15 +106,20 @@ function GameStatusView(game) {
 				game_id : gameData.game_id
 			});
 		});
-		view.add(startGameButton);
+		wrapper.add(startGameButton);
 	}
 
-	view.add(Ti.UI.createImageView({
-		image : '/images/arrow.png',
-		width : '10%',
-		height : (Ti.Platform.osname === 'android' ? Ti.UI.FILL : '0'),
-		bubbleParent : true
-	}));
+	if (Ti.Platform.osname === 'android') {
+		wrapper.add(Ti.UI.createImageView({
+			image : '/images/arrow.png',
+			width : '10%',
+			height : (Ti.Platform.osname === 'android' ? Ti.UI.FILL : '0'),
+			bubbleParent : true,
+			center : {
+				y : '50%'
+			}
+		}));
+	}
 
 	Ti.App.addEventListener('network:game:start:failure' + gameData.game_id, function(e) {
 		alert(e.reason);

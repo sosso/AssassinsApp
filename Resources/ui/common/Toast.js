@@ -1,34 +1,32 @@
-function Toast() {
-	function createiOSToastNotification(message) {
-		var window = Ti.UI.createWindow({
-			backgroundColor : 'transparent',
-			opacity : 0.7,
-			touchEnabled : false,
-			top : 0
-		});
-		var view = Ti.UI.createView({
-			height : '10%',
-			width : '25%',
-			center : {
-				x : '50%',
-				y : '80%'
-			},
-			backgroundColor : 'black',
-			zIndex : 5,
-			borderRadius : 5
-		});
-		var label = Ti.UI.createLabel({
-			height : 'auto',
-			textAlign : 'center',
-			text : message.message,
-			color : '#FFFFFF'
-		});
-		view.add(label);
-		window.add(view);
-		return window;
-	};
-
-}
+function Toast(){};
+function createiOSToastNotification(message) {
+	var window = Ti.UI.createWindow({
+		backgroundColor : 'transparent',
+		opacity : 0.7,
+		touchEnabled : false,
+		top : 0
+	});
+	var view = Ti.UI.createView({
+		height : '10%',
+		width : '25%',
+		center : {
+			x : '50%',
+			y : '80%'
+		},
+		backgroundColor : 'black',
+		zIndex : 5,
+		borderRadius : 5
+	});
+	var label = Ti.UI.createLabel({
+		height : 'auto',
+		textAlign : 'center',
+		text : message.message,
+		color : '#FFFFFF'
+	});
+	view.add(label);
+	window.add(view);
+	return window;
+};
 
 Ti.App.addEventListener('ui:toast', function(e) {
 	if (Ti.Platform.osname == 'android') {

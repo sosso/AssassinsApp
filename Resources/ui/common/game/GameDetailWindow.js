@@ -6,6 +6,14 @@ function GameDetailWindow(gameData) {
 		orientationModes : [Ti.UI.PORTRAIT, Ti.UI.UPSIDE_PORTRAIT]
 	});
 	var targetUsername, game_id;
+	var scrollView = Titanium.UI.createScrollView({
+		contentWidth : 'auto',
+		contentHeight : 'auto',
+		top : 0,
+		showVerticalScrollIndicator : true,
+		showHorizontalScrollIndicator : false,
+	});
+	self.add(scrollView);
 
 	var gameStatus = 'Game title: ' + gameData.title + '\n';
 	gameStatus += 'Game ID: ' + gameData.game_id + '\n';
@@ -27,7 +35,7 @@ function GameDetailWindow(gameData) {
 	gameStatus += 'Game completed: ' + gameData.completed + '\n';
 	gameStatus += 'Player or Game Master: ' + (gameData.isGameMaster ? 'Game Master' : 'Player') + '\n';
 
-	self.add(Ti.UI.createLabel({
+	scrollView.add(Ti.UI.createLabel({
 		color : 'white',
 		text : gameStatus,
 		width : '100%',
@@ -61,14 +69,14 @@ function GameDetailWindow(gameData) {
 					}
 				});
 			});
-			self.add(resolveShotButton);
+			scrollView.add(resolveShotButton);
 		} else if (status == 'Alive' && gameData.started) {
 			var getMissionButton = Ti.UI.createButton({
 				title : 'Get current target',
 				width : '100%',
 				height : 'auto',
 			});
-			self.add(getMissionButton);
+			scrollView.add(getMissionButton);
 			var currentMissionLabel = Ti.UI.createLabel({
 				color : 'white',
 				text : 'Click button to get current mission',
@@ -76,7 +84,7 @@ function GameDetailWindow(gameData) {
 				height : 'auto',
 				ellipsize : false
 			});
-			self.add(currentMissionLabel);
+			scrollView.add(currentMissionLabel);
 			getMissionButton.addEventListener('click', function() {
 				Ti.App.fireEvent('app:showiOSLoadingIndicator', {
 					message : 'Getting your mission. . .'
@@ -107,8 +115,8 @@ function GameDetailWindow(gameData) {
 					game_id : gameData.game_id
 				});
 			});
-			self.add(targetImage);
-			self.add(shootTargetButton);
+			scrollView.add(targetImage);
+			scrollView.add(shootTargetButton);
 
 			Ti.App.addEventListener('network:game:viewmission:success', function(missionInfo) {
 				text = 'Username: ' + missionInfo.mission.target_username + '\n';
@@ -156,7 +164,7 @@ function GameDetailWindow(gameData) {
 				new DisputeListWindow(disputeInfo.disputes).open();
 			});
 		});
-		self.add(resolveDisputeButton);
+		scrollView.add(resolveDisputeButton);
 	}
 
 	return self;
