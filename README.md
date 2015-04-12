@@ -1,5 +1,15 @@
-Assassins mobile client in Appcelerator Titanium.  App screenshots available at:
-http://imgur.com/a/91NCM/all
+Assassins mobile client in Appcelerator Titanium.  App screenshots:
+
+[Account Creation](http://imgur.com/a/699SJ#0)
+
+[Creating a Game](http://imgur.com/a/FRG1t#0)
+
+[Joining a Game](http://imgur.com/a/KWaxy#0)
+
+[Shooting a Target](http://imgur.com/a/M4NqB#0)
+
+[Kill Disupting / Confirmation](http://imgur.com/a/MZA00#0)
+
 
 Upcoming features:
 
